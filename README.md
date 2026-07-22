@@ -82,7 +82,6 @@ services:
       ports:
         - 8211:8211/udp
         - 27015:27015/udp
-        - 8212:8212/tcp  # REST API enabled port, enabled by default. DO NOT PORT FORWARD THIS.
       environment:
          PUID: 1000
          PGID: 1000
@@ -99,6 +98,14 @@ services:
          CROSSPLAY_PLATFORMS: "(Steam,Xbox,PS5,Mac)"
       volumes:
          - ./palworld:/palworld/
+
+   palmap-collector:
+      image: ghcr.io/baileymillerssi/pal-map-collector:sha-17d1158e63756dfb00509feb2f89d3a59b980449@sha256:6bcdccb16d357ec02f39536dfaa452a5201492841770be730cf18be0c7d25c01
+      restart: unless-stopped
+      depends_on:
+        - palworld
+      env_file:
+        - .env.palmap
 ```
 
 ### Palmap collector sidecar
@@ -142,11 +149,18 @@ services:
       ports:
         - 8211:8211/udp
         - 27015:27015/udp
-        # - 8212:8212/tcp  # Port for REST API if REST_API_ENABLED: true
       env_file:
          -  .env
       volumes:
          - ./palworld:/palworld/
+
+   palmap-collector:
+      image: ghcr.io/baileymillerssi/pal-map-collector:sha-17d1158e63756dfb00509feb2f89d3a59b980449@sha256:6bcdccb16d357ec02f39536dfaa452a5201492841770be730cf18be0c7d25c01
+      restart: unless-stopped
+      depends_on:
+        - palworld
+      env_file:
+        - .env.palmap
 ```
 
 ### Docker Run

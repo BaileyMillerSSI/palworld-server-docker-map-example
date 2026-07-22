@@ -101,6 +101,33 @@ services:
          - ./palworld:/palworld/
 ```
 
+### Palmap collector sidecar
+
+This fork's Compose example includes the outbound-only Palmap collector pinned
+to a multi-architecture image digest that supports both x64 and ARM64 hosts.
+The collector reaches Palworld at `http://palworld:8212` over the private
+Compose network; neither the Palworld REST API nor the collector publishes a
+host port.
+
+Before starting the stack:
+
+1. Copy `.env.palmap.example` to `.env.palmap`. The destination is ignored by
+   Git.
+2. Set `PalworldApi__Admin__Password` to the same value as the Palworld
+   container's `ADMIN_PASSWORD`.
+3. Replace `PalmapIngest__ClientId` and `PalmapIngest__ClientSecret` with the
+   one-time pair issued by Palmap Admin. The client ID is the value labeled
+   Server/Client ID; it is not the internal server UUID.
+4. Replace `PalmapIngest__PrivacyKey` with a unique Base64-encoded 32-byte key.
+
+The example sends snapshots to
+`http://192.168.1.6:5080/api/ingest/v1/snapshots`. Because that endpoint uses
+plain HTTP, the collector explicitly runs in Development with insecure HTTP
+enabled. The Palmap AppHost must also run in Development with
+`allow-insecure-collector-ingest=true`, and the Aspire machine's firewall must
+allow LAN TCP traffic to port `5080`. Use HTTPS and remove both insecure flags
+outside this local LAN setup.
+
 As an alternative, you can copy the [.env.example](.env.example) file to a new file called **.env** file.
 Modify it to your needs, check out the [environment variables](#environment-variables) section to check the correct
 values. Modify your [compose.yaml](compose.yaml) to this:

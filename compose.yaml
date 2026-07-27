@@ -27,7 +27,7 @@ services:
       - ./palworld:/palworld/
 
   palmap-collector:
-    image: ghcr.io/baileymillerssi/pal-map-collector:sha-17d1158e63756dfb00509feb2f89d3a59b980449@sha256:6bcdccb16d357ec02f39536dfaa452a5201492841770be730cf18be0c7d25c01
+    image: ghcr.io/baileymillerssi/pal-map-collector:sha-20ba6586eaada8f7e17ef9ee799677964e66c01d@sha256:895436dea0628837d1a6a5ff68b320e4dd263fabfe8a3276f997aa2fe7ef1fda
     restart: unless-stopped
     depends_on:
       - palworld

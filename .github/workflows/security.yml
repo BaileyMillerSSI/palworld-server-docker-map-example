@@ -13,6 +13,9 @@ jobs:
   container-scanning:
     name: Container - Scan
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      security-events: write
     steps:
 
       - name: Checkout
